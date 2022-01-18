@@ -22,7 +22,7 @@ static bool connection_attempted_ = false;
 //returns the units being used by the engine
 float GetUnrealUnits()
 {
-	float distanceUnitScale = 1;
+	float distanceUnitScale = 100.0;
 	FString ValueReceived; //Get scale value from settings
 	if (GConfig->GetString(TEXT("/Script/UnrealEd.EditorProjectAppearanceSettings"),
 	                       TEXT("DistanceUnits"), ValueReceived, GEditorIni))
@@ -201,8 +201,8 @@ void FInfinadeckSDKModule::StartupModule()
 	}
 	else
 	{
-		FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT("ThirdPartyLibraryError",
-		                                              "Failed to load Infinadeck third party library"));
+		//FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT("ThirdPartyLibraryError",
+		//                                              "Failed to load Infinadeck third party library"));
 	}
 }
 
