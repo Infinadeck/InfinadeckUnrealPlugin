@@ -1,11 +1,12 @@
 /**
  * ------------------------------------------------------------
+ * Copyright Infinadeck 2022
+ * Created by George Burger
  * Infinadeck Blueprint Library implementation file for use with Unreal Engine 4.
  * https://github.com/Infinadeck/InfinadeckUnrealPlugin
- * Created by George Burger @ Infinadeck, 2019-2022
- * Attribution required.
  * ------------------------------------------------------------
  */
+
 #include "InfinadeckBlueprintBPLibrary.h"
 #include "Core.h"
 #include "InfinadeckSDK.h"

@@ -1,9 +1,9 @@
 /**
  * ------------------------------------------------------------
+ * Copyright Infinadeck 2022
+ * Created by George Burger
  * InfinadeckAPI.dll InterOp header file for use with C++ Applications.
  * https://github.com/Infinadeck/InfinadeckSDK
- * Created by George Burger @ Infinadeck, 2019-2022
- * Attribution required.
  * ------------------------------------------------------------
  */
 

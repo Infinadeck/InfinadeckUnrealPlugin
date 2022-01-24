@@ -1,9 +1,9 @@
 /**
  * ------------------------------------------------------------
+ * Copyright Infinadeck 2022
+ * Created by George Burger
  * InfinadeckSDK InterOp header file for use with Unreal Engine 4.
  * https://github.com/Infinadeck/InfinadeckUnrealPlugin
- * Created by George Burger @ Infinadeck, 2019-2022
- * Attribution required.
  * ------------------------------------------------------------
  */
 

@@ -8,9 +8,9 @@
 	"CreatedBy": "Infinadeck",
 	"CreatedByURL": "http://infinadeck.com",
 	"DocsURL": "",
-	"MarketplaceURL": "",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/cf7ecc227c64457cb2bd1c58c3a659ca",
 	"SupportURL": "",
-	"EngineVersion": "",
+	"EngineVersion": "4.25",
 	"CanContainContent": true,
 	"Installed": false,
 	"Modules": [

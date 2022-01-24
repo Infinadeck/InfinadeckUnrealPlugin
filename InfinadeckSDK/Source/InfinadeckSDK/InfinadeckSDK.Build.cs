@@ -1,15 +1,15 @@
+/**
+ * ------------------------------------------------------------
+ * Copyright Infinadeck 2022
+ * Created by George Burger
+ * InfinadeckSDK Build file for use with Unreal Engine 4.
+ * https://github.com/Infinadeck/InfinadeckUnrealPlugin
+ * ------------------------------------------------------------
+ */
+
 using UnrealBuildTool;
 using System.IO;
 using System;
-
-/**
- * ------------------------------------------------------------
- * InfinadeckSDK Build file for use with Unreal Engine 4.
- * https://github.com/Infinadeck/InfinadeckUnrealPlugin
- * Created by George Burger @ Infinadeck, 2019-2022
- * Attribution required.
- * ------------------------------------------------------------
- */
 
 public class InfinadeckSDK : ModuleRules
 {
