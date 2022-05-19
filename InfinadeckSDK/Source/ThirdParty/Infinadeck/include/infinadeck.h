@@ -12,9 +12,9 @@
 
 #include <cstdint>
 
-#define API_VERSION_MAJOR 1
-#define API_VERSION_MINOR 8
-#define API_VERSION_BUILD 1
+#define API_VERSION_MAJOR 2
+#define API_VERSION_MINOR 0
+#define API_VERSION_BUILD 2
 
 #define INFINADECK_SERIAL_NUMBER_MAX_LENGTH 40
 
@@ -32,6 +32,7 @@ enum InfinadeckInitError {
 	InfinadeckInitError_FailedHostResolution,
 	InfinadeckInitError_FailedServerConnection,
 	InfinadeckInitError_FailedServerSend,
+	InfinadeckInitError_RuntimeOutOfDate
 };
 
 enum InfinadeckAppType {
@@ -111,12 +112,6 @@ namespace Infinadeck {
 	*/
 	INFINADECK_API SpeedVector2 API_CALLTYPE GetFloorSpeeds();
 
-	/*
-	* Returns the x and y floor speeds of the treadmill, normalized to be between
-	* 0 and 1.
-	*/
-	INFINADECK_API SpeedVector2 API_CALLTYPE GetFloorSpeedsNormalized();
-
 	/**
 	* Returns the magnitude of the floor speed of the treadmill.
 	*/
@@ -131,16 +126,6 @@ namespace Infinadeck {
 	* Sets manual floor speed of the treadmill.
 	*/
 	INFINADECK_API void API_CALLTYPE SetManualSpeeds(double x, double y);
-
-	/** SCHEDULED FOR DEPRECATION
-	* Sets the user's position.
-	*/
-	INFINADECK_API void API_CALLTYPE SetUserPosition(double x, double y);
-
-	/** SCHEDULED FOR DEPRECATION
-    * Sets the user's position.
-    */
-	INFINADECK_API void API_CALLTYPE SetUserRotation(double w, double x, double y, double z);
 
 	/**
     * Start the treadmill using tracking controls.
@@ -229,6 +214,8 @@ namespace Infinadeck {
 
 
 	INFINADECK_API uint32_t API_CALLTYPE InitInternal(InfinadeckInitError* inError);
+  
+	INFINADECK_API void API_CALLTYPE GetLastInitErrorDescription(char* buffer, int buffer_size);
 	/**
 	* Loads internal functionality.
 	*/

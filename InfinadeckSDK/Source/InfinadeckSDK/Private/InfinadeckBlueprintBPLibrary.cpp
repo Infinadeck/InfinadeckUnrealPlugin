@@ -66,18 +66,6 @@ void UInfinadeckBlueprintBPLibrary::SetTreadmillPause(bool brake) {
 	FInfinadeckSDKModule::Get().SetTreadmillPause(brake);
 }
 
-void UInfinadeckBlueprintBPLibrary::SetTreadmillUserPositionRotation(FVector position, FQuat quaternion) {
-  if (!FInfinadeckSDKModule::Get().CheckConnection()) {
-    FInfinadeckSDKModule::Get().ConnectToTreadmill();
-  }
-  FInfinadeckSDKModule::Get().SetUserPosition(position.X, 
-                                              position.Y);
-  FInfinadeckSDKModule::Get().SetUserRotation(quaternion.W, 
-                                              quaternion.X,
-                                              quaternion.Y,
-                                              quaternion.Z);
-}
-
 void UInfinadeckBlueprintBPLibrary::SetTreadmillManualMotion(float x, float y) {
   if (!FInfinadeckSDKModule::Get().CheckConnection()) {
     FInfinadeckSDKModule::Get().ConnectToTreadmill();
