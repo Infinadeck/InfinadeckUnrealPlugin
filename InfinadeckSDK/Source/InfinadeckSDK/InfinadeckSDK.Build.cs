@@ -68,14 +68,6 @@ public class InfinadeckSDK : ModuleRules
                 "InfinadeckAPI.lib"));
         PublicIncludePaths.Add(Path.Combine(ThirdPartyPath, "Infinadeck", "include"));
 
-        RuntimeDependencies.Add("$(TargetOutputDir)/Library.dll",
-            Path.Combine(
-                Path.Combine(ThirdPartyPath, "Infinadeck", "lib"),
-                (Target.Platform == UnrealTargetPlatform.Win64) ? "Win64" : "Win32",
-                "Library.dll"
-            )
-        );
-
         PublicDelayLoadDLLs.Add("InfinadeckAPI.dll");
         RuntimeDependencies.Add("$(TargetOutputDir)/InfinadeckAPI.dll",
             Path.Combine(
