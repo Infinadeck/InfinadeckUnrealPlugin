@@ -30,8 +30,6 @@ public:
 	inline FString GetTreadmillID();
 	inline FString GetTreadmillModelNumber();
 	inline FString GetTreadmillDLLVersion();
-	inline void SetUserPosition(float x, float y);
-	inline void SetUserRotation(float w, float x, float y, float z);
 	inline void SetTreadmillManualMotion(double x, double y);
 	inline FString InfinadeckJSONImport(FString CfgFileName);
 	inline TArray< FString > InfinadeckJSONRead(FString CfgFileName);

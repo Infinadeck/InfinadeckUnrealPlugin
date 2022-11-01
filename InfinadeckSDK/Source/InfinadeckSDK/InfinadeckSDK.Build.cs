@@ -67,6 +67,7 @@ public class InfinadeckSDK : ModuleRules
                 (Target.Platform == UnrealTargetPlatform.Win64) ? "Win64" : "Win32",
                 "InfinadeckAPI.lib"));
         PublicIncludePaths.Add(Path.Combine(ThirdPartyPath, "Infinadeck", "include"));
+
         PublicDelayLoadDLLs.Add("InfinadeckAPI.dll");
         RuntimeDependencies.Add("$(TargetOutputDir)/InfinadeckAPI.dll",
             Path.Combine(
@@ -75,29 +76,5 @@ public class InfinadeckSDK : ModuleRules
                 "InfinadeckAPI.dll"
             )
         );
-    }
-
-    public string GetRuntimeDllDependencyPath()
-    {
-        return Path.Combine(Path.Combine(ThirdPartyPath, "Infinadeck", "lib"),
-            (Target.Platform == UnrealTargetPlatform.Win64) ? "Win64" : "Win32",
-            "InfinadeckAPI.dll");
-    }
-
-    public bool LoadInfinadeckLib(ReadOnlyTargetRules Target)
-    {
-        bool isLibrarySupported = false;
-
-        if ((Target.Platform == UnrealTargetPlatform.Win64) || (Target.Platform == UnrealTargetPlatform.Win32))
-        {
-            isLibrarySupported = true;
-
-            PublicAdditionalLibraries.Add(Path.Combine(Path.Combine(ThirdPartyPath, "Infinadeck", "lib"),
-                (Target.Platform == UnrealTargetPlatform.Win64) ? "Win64" : "Win32",
-                "InfinadeckAPI.lib"));
-
-            PublicIncludePaths.Add(Path.Combine(ThirdPartyPath, "Infinadeck", "include"));
-        }
-        return isLibrarySupported;
     }
 }

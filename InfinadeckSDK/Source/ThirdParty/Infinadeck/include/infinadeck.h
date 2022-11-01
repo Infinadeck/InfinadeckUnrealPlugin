@@ -12,84 +12,77 @@
 
 #include <cstdint>
 
-#define API_VERSION_MAJOR 1
-#define API_VERSION_MINOR 8
+#define API_VERSION_MAJOR 2
+#define API_VERSION_MINOR 2
 #define API_VERSION_BUILD 1
 
 #define INFINADECK_SERIAL_NUMBER_MAX_LENGTH 40
 
-/**
-* Defines possible errors.
-*/
+/// @brief The different results from initialization
 enum InfinadeckInitError {
-	InfinadeckInitError_None,
-	InfinadeckInitError_Unknown,
-	InfinadeckInitError_NoServer,
-	InfinadeckInitError_UpdateRequired,
-	InfinadeckInitError_InterfaceVerificationFailed,
-	InfinadeckInitError_ControllerVerificationFailed,
-	InfinadeckInitError_FailedInitialization,
-	InfinadeckInitError_FailedHostResolution,
-	InfinadeckInitError_FailedServerConnection,
-	InfinadeckInitError_FailedServerSend,
-};
-
-enum InfinadeckAppType {
-	InfinadeckAppType_Standalone,
-	InfinadeckAppType_VRApplication,
-	InfinadeckAppType_VRServer
+  InfinadeckInitError_None,
+  InfinadeckInitError_Unknown,
+  InfinadeckInitError_NoServer,
+  InfinadeckInitError_UpdateRequired,
+  InfinadeckInitError_InterfaceVerificationFailed,
+  InfinadeckInitError_ControllerVerificationFailed,
+  InfinadeckInitError_FailedInitialization,
+  InfinadeckInitError_FailedHostResolution,
+  InfinadeckInitError_FailedServerConnection,
+  InfinadeckInitError_FailedServerSend,
+  InfinadeckInitError_RuntimeOutOfDate
 };
 
 namespace Infinadeck {
-	/**
-	* 2D vector representing speed in 2 directions. Convention is for index 0
-	* to be X and index 1 to be Y.
-	*/
-	struct SpeedVector2 {
-		double v[2];
-	};
+  
+  /// @brief Contains a 2-axis speed value
+  struct SpeedVector2 {
+    double v[2];
+  };
 
-	/**
-	* Represents position of ring, or the center of the treadmill in VR space,
-	* and the ring's radius.
-	*/
-	struct Ring {
-		double x;
-		double y;
-		double z;
-		double r;
-	};
+  /// @brief Represents the position and radius of the virtual ring
+  struct Ring {
+    double x;
+    double y;
+    double z;
+    double r;
+  };
 
-	struct TreadmillInfo {
-		char id[32];
-		char model_number[32];
-		char treadmill_version[32];
-	};
+  /// @brief Various strings describing a treadmill on the network
+  struct TreadmillInfo {
+    char id[32];
+    char model_number[32];
+    char treadmill_version[32];
+  };
 
-	struct PositionVector3 {
-		double x;
-		double y;
-		double z;
-	};
+  /// @brief Represents a 3-axis point
+  struct PositionVector3 {
+      double x;
+      double y;
+      double z;
+  };
 
-	struct QuaternionVector4 {
-		double w;
-		double x;
-		double y;
-		double z;
-	};
+  /// @brief Represents a rotation represented as a quaternion
+  struct QuaternionVector4 {
+      double w;
+      double x;
+      double y;
+      double z;
+  };
 
-	struct UserPositionRotation {
-		PositionVector3 position;
-		QuaternionVector4 quaternion;
-	};
+  /// @brief Combines a user's 3-axis position and rotation
+  struct UserPositionRotation {
+      PositionVector3 position;
+      QuaternionVector4 quaternion;
+  };
 
-	struct DiagnosticInfo {
-		SpeedVector2 service_distance;
-		SpeedVector2 total_distance;
-		double service_hours;
-		double total_hours;
-	};
+  /// @brief Represents various numerical data points for a treadmill on the network
+  struct DiagnosticInfo {
+      SpeedVector2 service_distance;
+      SpeedVector2 total_distance;
+      double service_hours;
+      double total_hours;
+  };
 
 }
 #if defined( _WIN32 )
@@ -106,145 +99,141 @@ namespace Infinadeck {
 
 namespace Infinadeck {
 
-	/**
-	* Returns the x and y floor speeds of the treadmill.
-	*/
-	INFINADECK_API SpeedVector2 API_CALLTYPE GetFloorSpeeds();
+  /// @brief Get the current floor speed in each axis
+  /// 
+  /// @return The speed in the X and Y axis, in m/s
+  INFINADECK_API SpeedVector2 API_CALLTYPE GetFloorSpeeds();
 
-	/*
-	* Returns the x and y floor speeds of the treadmill, normalized to be between
-	* 0 and 1.
-	*/
-	INFINADECK_API SpeedVector2 API_CALLTYPE GetFloorSpeedsNormalized();
-
-	/**
-	* Returns the magnitude of the floor speed of the treadmill.
-	*/
-	INFINADECK_API double API_CALLTYPE GetFloorSpeedMagnitude();
-
-	/**
-	* Returns the angle of the floor speed of the treadmill.
-	*/
-	INFINADECK_API double API_CALLTYPE GetFloorSpeedAngle();
-
-	/**
-	* Sets manual floor speed of the treadmill.
-	*/
-	INFINADECK_API void API_CALLTYPE SetManualSpeeds(double x, double y);
-
-	/** SCHEDULED FOR DEPRECATION
-	* Sets the user's position.
-	*/
-	INFINADECK_API void API_CALLTYPE SetUserPosition(double x, double y);
-
-	/** SCHEDULED FOR DEPRECATION
-    * Sets the user's position.
-    */
-	INFINADECK_API void API_CALLTYPE SetUserRotation(double w, double x, double y, double z);
-
-	/**
-    * Start the treadmill using tracking controls.
-    */
-	INFINADECK_API void API_CALLTYPE StartTreadmillUserControl();
-
-	/**
-	* Check if connection to treadmill service has been established.
-	*/
-	INFINADECK_API bool API_CALLTYPE CheckConnection();
-
-	/**
-	* Returns the x,y,z coordinates of the ring, which corresponds to the center
-	* of the treadmill in VR space. Also retrieves the radius of the ring.
-	*/
-	INFINADECK_API Ring API_CALLTYPE GetRing();
-
-	/**
-	* Start or Stop the treadmill.
-	*/
-	INFINADECK_API void SetTreadmillRunState(bool state);
-
-	/**
-    * Start the treadmill in manual control mode.
-    */
-	INFINADECK_API void StartTreadmillManualControl();
-
-	/**
-    * Stop the treadmill.
-    */
-	INFINADECK_API void StopTreadmill();
-
-	/**
-	* Returns true if the treadmill is running, and false if the treadmill is
-	* stopped.
-	*/
-	INFINADECK_API bool API_CALLTYPE GetTreadmillRunState();
-
-	/**
-	* Get the serial number of the attached treadmill. Returns an empty string
-	* if connected to a virtual treadmill.
-	*/
-	INFINADECK_API void API_CALLTYPE GetTreadmillSerialNumber(char* string, int length);
-
-	/**
-	* Fills a TreadmillInfo struct with information about currently connected
-	* treadmill
-	*/
-	INFINADECK_API TreadmillInfo API_CALLTYPE GetTreadmillInfo();
-
-	/**
-	* Get the position and rotation of the user from the treadmill.
-	*/
-	INFINADECK_API UserPositionRotation API_CALLTYPE GetUserPositionRotation();
-
-	/**
-	* Get diagnostic information from the treadmill.
-	*/
-	INFINADECK_API DiagnosticInfo API_CALLTYPE GetDiagnostics();
-
-	/**
-    * Puts the treadmill into a "paused" state, where it will not move, but will
-    * remain "enabled"
-    */
-	INFINADECK_API void API_CALLTYPE SetTreadmillPause(bool enable);
-
-	/**
-	* Checks if the treadmill is in a "paused" state.
-	*/
-	INFINADECK_API bool API_CALLTYPE GetTreadmillPauseState();
-
-	/**
-	* Enables or disables the virtual ring in the user's virtual display.
-	*/
-	INFINADECK_API void API_CALLTYPE SetVirtualRing(bool enable);
-
-	/**
-	* Checks if the virtual ring should be displayed to the user.
-	*/
-	INFINADECK_API bool API_CALLTYPE GetVirtualRingEnabled();
-
-	/**
-	* Get the angle of the reference device relative to the treadmill's orientation.
-	*/
-	INFINADECK_API QuaternionVector4 API_CALLTYPE GetReferenceDeviceAngleDifference();
+  /// @brief Treating the floor velocity as a vector, get the magnitude
+  /// 
+  /// @return The magnitude of the floor velocity, in m/s
+  INFINADECK_API double API_CALLTYPE GetFloorSpeedMagnitude();
 
 
-	INFINADECK_API uint32_t API_CALLTYPE InitInternal(InfinadeckInitError* inError);
-	/**
-	* Loads internal functionality.
-	*/
-	inline void InitInfinadeckConnection(InfinadeckInitError* err) {
-		*err = InfinadeckInitError_None;
-		InitInternal(err);
-	}
+  /// @brief Treating the floor velocity as a vector, get the direction
+  /// 
+  /// @return The direction of the floor velocity, in radians
+  INFINADECK_API double API_CALLTYPE GetFloorSpeedAngle();
 
-	INFINADECK_API uint32_t API_CALLTYPE DeInitInternal();
-	/**
-	* Unloads internal functionality. API functions should not be called after
-	* this.
-	*/
-	inline void DeInitInfinadeckConnection() {
-		DeInitInternal();
-	}
+  /// @brief Set the manual speed in the X and Y axis
+  /// 
+  /// @details The treadmill can be operated in manual mode, with the speed in the X and Y axis set by the user. This
+  ///          be done using the on-screen joystick in the desktop application, or by using this function. In the event
+  ///          that both the on-screen joystick and this function are used simultaneously, the on-screen joystick takes
+  ///          priority.
+  /// 
+  /// @param[in] x,y The velocity sent to each axis, in m/s
+  INFINADECK_API void API_CALLTYPE SetManualSpeeds(double x, double y);
 
+  /// @brief Start the treadmill using user tracking
+  ///
+  /// @details The treadmill's primary method of operation is by moving the floor in response to user motion, to keep
+  ///          the user in the center. This function will start the treadmill in this mode, if it is currently possible
+  ///          to do so. If the treadmill is not in the correct state, or it is already in any active mode, this will
+  ///          have no effect.
+  INFINADECK_API void API_CALLTYPE StartTreadmillUserControl();
+
+  /// @brief Check if there is an active connection to Infinadeck Runtime
+  /// 
+  /// @return whether connection is active or not
+  INFINADECK_API bool API_CALLTYPE CheckConnection();
+
+  /// @brief Gets the position and size of the virtual ring
+  /// 
+  /// @details The ring on the treadmill frame is available in the VR world space. This function will retrieve the
+  ///          current position of the ring in 3D space, as well as the radius of the ring. In order to be accurate,
+  ///          the center position must be correctly calibrated.
+  /// 
+  /// @return Struct containing position and radius of the ring in VR
+  INFINADECK_API Ring API_CALLTYPE GetRing();
+
+  /// @brief Set the treadmill to run in either tracked or manual mode
+  /// 
+  /// @param[in] state `true` if using tracking mode, `false` if using manual mode
+  INFINADECK_API void SetTreadmillRunState(bool state);
+
+  /// @brief Start the treadmill in manual mode
+  /// 
+  /// @details The treadmill can be operated in manual mode, with the speed in the X and Y axis set by the user. This 
+  ///          function will start the treadmill in this mode, if it is currently possible to do so. If the treadmill
+  ///          is not in the correct state, or it is already in any active mode, this will have no effect.
+  INFINADECK_API void StartTreadmillManualControl();
+
+  /// @brief Stop the treadmill if it is moving
+  ///
+  /// @details If the treadmill is currently in motion, this function will stop it and put it in a state where it is
+  ///          ready to receive another start command. If the treadmill is already stopped, this will have no effect.
+  INFINADECK_API void StopTreadmill();
+
+  /// @brief Gets whether the treadmill is currently is motion
+  /// 
+  /// @return whether the treadmill is currently moving or not
+  INFINADECK_API bool API_CALLTYPE GetTreadmillRunState();
+
+  /// @brief Get the serial number of the currently connected treadmill
+  /// 
+  /// @param[out] string Buffer containing the serial number
+  /// @param[in] length Size of the given buffer
+  INFINADECK_API void API_CALLTYPE GetTreadmillSerialNumber(char* string, int length);
+
+  /// @brief Get the current treadmill's serial number, model number, and firmware version
+  /// 
+  /// @return struct containing the serial number, model number, and firmware version
+  INFINADECK_API TreadmillInfo API_CALLTYPE GetTreadmillInfo();
+
+  /// @brief Get the user's current position and rotation in the tracking space
+  /// 
+  /// @return Struct containing the user's current position and rotation
+  INFINADECK_API UserPositionRotation API_CALLTYPE GetUserPositionRotation();
+
+  /// @brief Get diagnostic information about the currently connected treadmill
+  /// 
+  /// @return struct information about the currently connected treadmill
+  INFINADECK_API DiagnosticInfo API_CALLTYPE GetDiagnostics();
+
+  /// @brief Currently does nothing
+  INFINADECK_API void API_CALLTYPE SetTreadmillPause(bool enable);
+
+  /// @brief Currently does nothing
+  INFINADECK_API bool API_CALLTYPE GetTreadmillPauseState();
+
+  /// @brief Currently does nothing
+  INFINADECK_API void API_CALLTYPE SetVirtualRing(bool enable);
+
+  /// @brief Currently does nothing
+  INFINADECK_API bool API_CALLTYPE GetVirtualRingEnabled();
+
+  /// @brief Get the difference between the angles of the reference tracking device and floor speed
+  /// 
+  /// @details The difference in the angle between the treadmill and the reference device (parallel to the plane of the
+  ///          treadmill) may be useful for several purposes, most notably mapping the user's motion onto a virtual 
+  ///          trackpad for moving in VR applications that don't natively support Infinadeck.
+  /// 
+  /// @return Quaternion representing the differential rotation
+  INFINADECK_API QuaternionVector4 API_CALLTYPE GetReferenceDeviceAngleDifference();
+
+  /// @brief Should not be called by the user
+  INFINADECK_API uint32_t API_CALLTYPE InitInternal(InfinadeckInitError* inError);
+  
+  /// @brief Get a detailed text description of the most recent error during initialization
+  /// 
+  /// @param[out] buffer String buffer containing the error description
+  /// @param[in] buffer_size The size of the given buffer
+  INFINADECK_API void API_CALLTYPE GetLastInitErrorDescription(char* buffer, int buffer_size);
+
+  /// @brief Initializes API and connects to Runtime
+  /// @param[in] err Error description, set to `InfinadeckInitError_None` if successful
+  inline void InitInfinadeckConnection(InfinadeckInitError* err) {
+    *err = InfinadeckInitError_None;
+    InitInternal(err);
+  }
+
+  /// @brief Should not be called by user 
+  INFINADECK_API uint32_t API_CALLTYPE DeInitInternal();
+
+  /// @brief Shuts down the API and closes connection to the Runtime
+  inline void DeInitInfinadeckConnection() {
+    DeInitInternal();
+  }
 }
 #endif

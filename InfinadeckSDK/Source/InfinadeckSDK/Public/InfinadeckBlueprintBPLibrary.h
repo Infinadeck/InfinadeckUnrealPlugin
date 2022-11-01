@@ -54,9 +54,6 @@ class INFINADECKSDK_API UInfinadeckBlueprintBPLibrary : public UBlueprintFunctio
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Pause treadmill motion", Keywords = "Infinadeck Treadmill Locomotion Control VR Omnidirectional"), Category = "Infinadeck")
 	static void SetTreadmillPause(bool brake);
 
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Set User Position and rotation", Keywords = "Infinadeck Treadmill Locomotion Control VR Omnidirectional"), Category = "Infinadeck")
-	static void SetTreadmillUserPositionRotation(FVector position, FQuat quaternion);
-
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Set Treadmill Manual Direction", Keywords = "Infinadeck Treadmill Locomotion Control VR Omnidirectional"), Category = "Infinadeck")
 	static void SetTreadmillManualMotion(float x, float y);
 

@@ -117,19 +117,6 @@ bool FInfinadeckSDKModule::GetTreadmillRunState()
 	return Infinadeck::GetTreadmillRunState();
 }
 
-//Setter for the user position
-void FInfinadeckSDKModule::SetUserPosition(float x, float y)
-{
-	Infinadeck::SetUserPosition(static_cast<double>(x), static_cast<double>(y));
-}
-
-//Setter for the user rotation
-void FInfinadeckSDKModule::SetUserRotation(float w, float x, float y, float z)
-{
-	Infinadeck::SetUserRotation(static_cast<double>(w), static_cast<double>(x),
-	                            static_cast<double>(y), static_cast<double>(z));
-}
-
 //getter for the treadmill's break
 bool FInfinadeckSDKModule::GetTreadmillPause()
 {
