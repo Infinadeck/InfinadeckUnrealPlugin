@@ -208,12 +208,12 @@ FString FInfinadeckSDKModule::InfinadeckJSONImport(FString CfgFileName)
 	IFileManager& FileManager = IFileManager::Get();
 
 	FString JsonString;
-	if (!FileManager.FileExists(*CfgFileName)) return JsonString;
-
-	if (!FFileHelper::LoadFileToString(JsonString, *CfgFileName))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("FInfinadeckSDKModule::InfinadeckJSONImport() unable to import configuration file %s - using defaults"), *CfgFileName);
+	if (!FileManager.FileExists(*CfgFileName)) { 
+		UE_LOG(LogTemp, Warning, TEXT("FInfinadeckSDKModule::InfinadeckJSONImport() unable to import configuration file %s - generating empty"), *CfgFileName);
+		FString EmptyString;
+		FFileHelper::SaveStringToFile(EmptyString, *CfgFileName);
 	}
+	FFileHelper::LoadFileToString(JsonString, *CfgFileName);
 	return JsonString;
 }
 
@@ -224,7 +224,7 @@ TArray< FString > FInfinadeckSDKModule::InfinadeckJSONRead(FString CfgFileName)
 	TArray< FString > JsonStringA;
 	if (!FFileHelper::LoadFileToStringArray(JsonStringA, *CfgFileName))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("FInfinadeckSDKModule::InfinadeckJSONImport() unable to read configuration file %s - using defaults"), *CfgFileName);
+		UE_LOG(LogTemp, Warning, TEXT("FInfinadeckSDKModule::InfinadeckJSONRead() unable to read configuration file %s - using defaults"), *CfgFileName);
 	}
 	return JsonStringA;
 }
@@ -235,7 +235,7 @@ bool FInfinadeckSDKModule::InfinadeckJSONWrite(FString CfgFileName, TArray< FStr
 
 	if (!FFileHelper::SaveStringArrayToFile(DataString, *CfgFileName))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("FInfinadeckSDKModule::InfinadeckJSONImport() unable to write configuration file %s - using defaults"), *CfgFileName);
+		UE_LOG(LogTemp, Warning, TEXT("FInfinadeckSDKModule::InfinadeckJSONWrite() unable to write configuration file %s - using defaults"), *CfgFileName);
 		return false;
 	}
 	return true;
