@@ -1,5 +1,5 @@
 # InfinadeckUnrealPlugin
-Unreal Engine 4 plugin for implementation of Infinadeck features and assets.
+Unreal Engine 4 & 5 plugin for implementation of Infinadeck features and assets.
 
 PROJECT MUST BE A C++ PROJECT, OR ELSE API CALLS WILL NOT WORK.
 
