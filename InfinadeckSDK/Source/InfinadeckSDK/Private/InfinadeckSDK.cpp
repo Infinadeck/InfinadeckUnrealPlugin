@@ -10,6 +10,7 @@
 #include "InfinadeckSDK.h"
 #include "Core.h"
 #include "Math/UnitConversion.h"
+#include "Math/Quat.h"
 #include "Modules/ModuleManager.h"
 #include "Interfaces/IPluginManager.h"
 #include "infinadeck.h"
@@ -18,6 +19,7 @@
 #define LOCTEXT_NAMESPACE "FInfinadeckSDKModule"
 
 static bool connection_attempted_ = false;
+static bool prevent_early_function_calls = false;
 
 //returns the units being used by the engine
 float GetUnrealUnits()
@@ -58,6 +60,9 @@ float GetUnrealUnits()
 	return distanceUnitScale; //return the unit scale
 }
 
+bool FInfinadeckSDKModule::CheckRuntimeOpen() {
+	return Infinadeck::IsRuntimeOpen();
+}
 //returns the ring position after converting based on the unit scale
 FVector FInfinadeckSDKModule::GetRingPosition()
 {
@@ -150,6 +155,7 @@ void FInfinadeckSDKModule::StopTreadmill()
 //checks the connection to the treadmill and client
 bool FInfinadeckSDKModule::CheckConnection()
 {
+	if (prevent_early_function_calls) return false;
 	return Infinadeck::CheckConnection();
 }
 
@@ -158,12 +164,63 @@ InfinadeckInitError FInfinadeckSDKModule::ConnectToTreadmill()
 {
 	InfinadeckInitError e = InfinadeckInitError_FailedServerConnection;
 	Infinadeck::InitInfinadeckConnection(&e);
+	if (e == InfinadeckInitError_None) { prevent_early_function_calls = false; }
+	else { prevent_early_function_calls = true; }
 	return e;
 }
 
 void FInfinadeckSDKModule::SetTreadmillManualMotion(double x, double y)
 {
 	Infinadeck::SetManualSpeeds(x, y);
+}
+
+//The magnitude of the floor velocity, in m/s
+float FInfinadeckSDKModule::GetFloorSpeedMagnitude()
+{
+	return Infinadeck::GetFloorSpeedMagnitude() * GetUnrealUnits();
+}
+
+//The direction of the floor velocity, in radians
+float FInfinadeckSDKModule::GetFloorSpeedAngle()
+{
+	return Infinadeck::GetFloorSpeedAngle();
+}
+
+//contains user's current position
+FVector FInfinadeckSDKModule::GetUserPosition()
+{
+	Infinadeck::UserPositionRotation user = Infinadeck::GetUserPositionRotation();
+	float distanceUnitScale = GetUnrealUnits();
+	FVector UserPosition = FVector(user.position.x * distanceUnitScale, user.position.y * distanceUnitScale, user.position.z * distanceUnitScale);
+	return UserPosition;
+}
+
+//contains user's current rotation
+FQuat FInfinadeckSDKModule::GetUserRotation()
+{
+	Infinadeck::UserPositionRotation user = Infinadeck::GetUserPositionRotation();
+	FQuat UserRotation = FQuat(user.quaternion.w, user.quaternion.x, user.quaternion.y, user.quaternion.z);
+	return UserRotation;
+}
+
+//Currently does nothing
+void FInfinadeckSDKModule::SetVirtualRing(bool enable)
+{
+	Infinadeck::SetVirtualRing(enable);
+}
+
+//Currently does nothing
+bool FInfinadeckSDKModule::GetVirtualRingEnabled()
+{
+	return Infinadeck::GetVirtualRingEnabled();
+}
+
+//Quaternion representing the differential rotation
+FQuat FInfinadeckSDKModule::GetReferenceDeviceAngleDifference()
+{
+	Infinadeck::QuaternionVector4 vec = Infinadeck::GetReferenceDeviceAngleDifference();
+	FQuat RefRotation = FQuat(vec.w, vec.x, vec.y, vec.z);
+	return RefRotation;
 }
 
 void FInfinadeckSDKModule::StartupModule()
@@ -203,17 +260,18 @@ void FInfinadeckSDKModule::ShutdownModule()
 	ExampleLibraryHandle = nullptr;
 }
 
-FString FInfinadeckSDKModule::InfinadeckJSONImport(FString CfgFileName)
+FString FInfinadeckSDKModule::InfinadeckJSONImport(FString CfgFileName, bool FreshStart)
 {
 	IFileManager& FileManager = IFileManager::Get();
-
+	
 	FString JsonString;
 	if (!FileManager.FileExists(*CfgFileName)) { 
 		UE_LOG(LogTemp, Warning, TEXT("FInfinadeckSDKModule::InfinadeckJSONImport() unable to import configuration file %s - generating empty"), *CfgFileName);
 		FString EmptyString;
 		FFileHelper::SaveStringToFile(EmptyString, *CfgFileName);
 	}
-	FFileHelper::LoadFileToString(JsonString, *CfgFileName);
+	if (!FreshStart) { FFileHelper::LoadFileToString(JsonString, *CfgFileName); }
+	else { FFileHelper::SaveStringToFile(JsonString, *CfgFileName); }
 	return JsonString;
 }
 

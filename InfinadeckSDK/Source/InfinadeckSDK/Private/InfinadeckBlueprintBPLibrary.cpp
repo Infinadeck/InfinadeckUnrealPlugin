@@ -18,38 +18,38 @@ UInfinadeckBlueprintBPLibrary::UInfinadeckBlueprintBPLibrary(const FObjectInitia
 }
 
 FVector UInfinadeckBlueprintBPLibrary::GetTreadmillMotion() {
-  if (!FInfinadeckSDKModule::Get().CheckConnection()) {
-    FInfinadeckSDKModule::Get().ConnectToTreadmill();
-  }
-  return FInfinadeckSDKModule::Get().GetTreadmillDirection();
+	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
+		FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	}
+	return FInfinadeckSDKModule::Get().GetTreadmillDirection();
 }
 
 FVector UInfinadeckBlueprintBPLibrary::GetRingPosition() {
-  if (!FInfinadeckSDKModule::Get().CheckConnection()) {
-    FInfinadeckSDKModule::Get().ConnectToTreadmill();
-  }
-  return FInfinadeckSDKModule::Get().GetRingPosition();
+	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
+		FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	}
+	return FInfinadeckSDKModule::Get().GetRingPosition();
 }
 
 float UInfinadeckBlueprintBPLibrary::GetRingRadius() {
-  if (!FInfinadeckSDKModule::Get().CheckConnection()) {
-    FInfinadeckSDKModule::Get().ConnectToTreadmill();
-  }
-  return FInfinadeckSDKModule::Get().GetRingRadius();
+	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
+		FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	}
+	return FInfinadeckSDKModule::Get().GetRingRadius();
 }
 
 bool UInfinadeckBlueprintBPLibrary::GetTreadmillRunState() {
-  if (!FInfinadeckSDKModule::Get().CheckConnection()) {
-    FInfinadeckSDKModule::Get().ConnectToTreadmill();
-  }
-  return FInfinadeckSDKModule::Get().GetTreadmillRunState();
+	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
+		FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	}
+	return FInfinadeckSDKModule::Get().GetTreadmillRunState();
 }
 
 void UInfinadeckBlueprintBPLibrary::SetTreadmillRunState(bool state) {
-  if (!FInfinadeckSDKModule::Get().CheckConnection()) {
-    FInfinadeckSDKModule::Get().ConnectToTreadmill();
-  }
-  FInfinadeckSDKModule::Get().SetTreadmillRunState(state);
+	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
+		FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	}
+	FInfinadeckSDKModule::Get().SetTreadmillRunState(state);
 }
 
 bool UInfinadeckBlueprintBPLibrary::GetTreadmillPause() {
@@ -67,10 +67,10 @@ void UInfinadeckBlueprintBPLibrary::SetTreadmillPause(bool brake) {
 }
 
 void UInfinadeckBlueprintBPLibrary::SetTreadmillManualMotion(float x, float y) {
-  if (!FInfinadeckSDKModule::Get().CheckConnection()) {
-    FInfinadeckSDKModule::Get().ConnectToTreadmill();
-  }
-  FInfinadeckSDKModule::Get().SetTreadmillManualMotion(x,y); 
+	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
+		FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	}
+	FInfinadeckSDKModule::Get().SetTreadmillManualMotion(x, y);
 }
 
 void UInfinadeckBlueprintBPLibrary::StartTreadmillManualControl() {
@@ -115,23 +115,89 @@ FString UInfinadeckBlueprintBPLibrary::GetTreadmillDLLVersion() {
 	return FInfinadeckSDKModule::Get().GetTreadmillDLLVersion();
 }
 
-FString UInfinadeckBlueprintBPLibrary::InfinadeckJSONImport(FString CfgFileName) {
+bool UInfinadeckBlueprintBPLibrary::CheckConnection() {
+	return FInfinadeckSDKModule::Get().CheckConnection();
+}
+
+FString UInfinadeckBlueprintBPLibrary::ConnectToTreadmill() {
+	InfinadeckInitError e = FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	FString errorInfo = "";
+	if (e == InfinadeckInitError_None) { errorInfo = "ERROR: INIT CONNECTION FAILED WITH NO ERROR"; }
+	else if (e == InfinadeckInitError_Unknown) { errorInfo = "ERROR: UNKNOWN ERROR"; }
+	else if (e == InfinadeckInitError_NoServer) { errorInfo = "ERROR: NO SERVER FOUND"; }
+	else if (e == InfinadeckInitError_UpdateRequired) { errorInfo = "ERROR: GAME API UPDATE REQUIRED"; }
+	else if (e == InfinadeckInitError_InterfaceVerificationFailed) { errorInfo = "ERROR: FAILED TO VERIFY INTERFACE"; }
+	else if (e == InfinadeckInitError_ControllerVerificationFailed) { errorInfo = "ERROR: FAILED TO VERIFY CONTROLLER"; }
+	else if (e == InfinadeckInitError_FailedInitialization) { errorInfo = "ERROR: FAILED TO INITIALIZE"; }
+	else if (e == InfinadeckInitError_FailedHostResolution) { errorInfo = "ERROR: FAILED TO RESOLVE HOST"; }
+	else if (e == InfinadeckInitError_FailedServerConnection) { errorInfo = "ERROR: FAILED TO CONNECT TO SERVER"; }
+	else if (e == InfinadeckInitError_FailedServerSend) { errorInfo = "ERROR: FAILED TO SEND PACKET TO SERVER"; }
+	else if (e == InfinadeckInitError_RuntimeOutOfDate) { errorInfo = "ERROR: RUNTIME OUT OF DATE"; }
+	else { errorInfo = "ERROR: UNDOCUMENTED ERROR"; }
+	return errorInfo;
+}
+
+bool UInfinadeckBlueprintBPLibrary::CheckRuntimeOpen() {
+	return FInfinadeckSDKModule::Get().CheckRuntimeOpen();
+}
+
+float UInfinadeckBlueprintBPLibrary::GetFloorSpeedMagnitude() {
 	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
 		FInfinadeckSDKModule::Get().ConnectToTreadmill();
 	}
-	return FInfinadeckSDKModule::Get().InfinadeckJSONImport(CfgFileName);
+	return FInfinadeckSDKModule::Get().GetFloorSpeedMagnitude();
+}
+
+float UInfinadeckBlueprintBPLibrary::GetFloorSpeedAngle() {
+	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
+		FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	}
+	return FInfinadeckSDKModule::Get().GetFloorSpeedAngle();
+}
+
+FVector UInfinadeckBlueprintBPLibrary::GetUserPosition() {
+	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
+		FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	}
+	return FInfinadeckSDKModule::Get().GetUserPosition();
+}
+
+FQuat UInfinadeckBlueprintBPLibrary::GetUserRotation() {
+	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
+		FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	}
+	return FInfinadeckSDKModule::Get().GetUserRotation();
+}
+
+void UInfinadeckBlueprintBPLibrary::SetVirtualRing(bool enable) {
+	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
+		FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	}
+	FInfinadeckSDKModule::Get().SetVirtualRing(enable);
+}
+
+bool UInfinadeckBlueprintBPLibrary::GetVirtualRingEnabled() {
+	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
+		FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	}
+	return FInfinadeckSDKModule::Get().GetVirtualRingEnabled();
+}
+
+FQuat UInfinadeckBlueprintBPLibrary::GetReferenceDeviceAngleDifference() {
+	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
+		FInfinadeckSDKModule::Get().ConnectToTreadmill();
+	}
+	return FInfinadeckSDKModule::Get().GetReferenceDeviceAngleDifference();
+}
+
+FString UInfinadeckBlueprintBPLibrary::InfinadeckJSONImport(FString CfgFileName, bool FreshStart) {
+	return FInfinadeckSDKModule::Get().InfinadeckJSONImport(CfgFileName, FreshStart);
 }
 
 TArray< FString > UInfinadeckBlueprintBPLibrary::InfinadeckJSONRead(FString CfgFileName) {
-	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
-		FInfinadeckSDKModule::Get().ConnectToTreadmill();
-	}
 	return FInfinadeckSDKModule::Get().InfinadeckJSONRead(CfgFileName);
 }
 
 bool UInfinadeckBlueprintBPLibrary::InfinadeckJSONWrite(FString CfgFileName, TArray< FString > DataString) {
-	if (!FInfinadeckSDKModule::Get().CheckConnection()) {
-		FInfinadeckSDKModule::Get().ConnectToTreadmill();
-	}
 	return FInfinadeckSDKModule::Get().InfinadeckJSONWrite(CfgFileName, DataString);
 }

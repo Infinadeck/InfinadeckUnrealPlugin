@@ -15,6 +15,7 @@
 class INFINADECKSDK_API FInfinadeckSDKModule : public IModuleInterface
 {
 public:
+	inline bool CheckRuntimeOpen();
 	inline FVector GetRingPosition();
 	inline FVector GetTreadmillDirection();
 	inline float GetRingRadius();
@@ -31,7 +32,14 @@ public:
 	inline FString GetTreadmillModelNumber();
 	inline FString GetTreadmillDLLVersion();
 	inline void SetTreadmillManualMotion(double x, double y);
-	inline FString InfinadeckJSONImport(FString CfgFileName);
+	inline float GetFloorSpeedMagnitude();
+	inline float GetFloorSpeedAngle();
+	inline FVector GetUserPosition();
+	inline FQuat GetUserRotation();
+	inline void SetVirtualRing(bool enable);
+	inline bool GetVirtualRingEnabled();
+	inline FQuat GetReferenceDeviceAngleDifference();
+	inline FString InfinadeckJSONImport(FString CfgFileName, bool FreshStart);
 	inline TArray< FString > InfinadeckJSONRead(FString CfgFileName);
 	inline bool InfinadeckJSONWrite(FString CfgFileName, TArray< FString > DataString);
 	

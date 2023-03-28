@@ -99,6 +99,11 @@ namespace Infinadeck {
 
 namespace Infinadeck {
 
+  /// @brief Check if Runtime is open and available for connection
+  /// 
+  /// @return True if Runtime is currently open, otherwise false
+  INFINADECK_API bool API_CALLTYPE IsRuntimeOpen();
+	
   /// @brief Get the current floor speed in each axis
   /// 
   /// @return The speed in the X and Y axis, in m/s
