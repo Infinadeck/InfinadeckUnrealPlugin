@@ -75,8 +75,38 @@ class INFINADECKSDK_API UInfinadeckBlueprintBPLibrary : public UBlueprintFunctio
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get the treadmill DLL version", Keywords = "Infinadeck Treadmill Locomotion Control VR Omnidirectional"), Category = "Infinadeck")
 	static FString GetTreadmillDLLVersion();
 
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Check if connected to a treadmill", Keywords = "Infinadeck Treadmill Control VR Locomotion Omnidirectional"), Category = "Infinadeck")
+	static bool CheckConnection();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Connect to treadmill (provides errors)", Keywords = "Infinadeck Treadmill Control VR Locomotion Omnidirectional"), Category = "Infinadeck")
+	static FString ConnectToTreadmill();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Check if connected to an instance of the runtime", Keywords = "Infinadeck Treadmill Control VR Locomotion Omnidirectional"), Category = "Infinadeck")
+	static bool CheckRuntimeOpen();
+	
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get the floor speed (magnitude)", Keywords = "Infinadeck Treadmill Control VR Locomotion Omnidirectional"), Category = "Infinadeck")
+	static float GetFloorSpeedMagnitude();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get the floor speed (angle)", Keywords = "Infinadeck Treadmill Control VR Locomotion Omnidirectional"), Category = "Infinadeck")
+	static float GetFloorSpeedAngle();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get the treadmill user's position", Keywords = "Infinadeck Treadmill Control VR Locomotion Omnidirectional"), Category = "Infinadeck")
+	static FVector GetUserPosition();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get the treadmill user's rotation", Keywords = "Infinadeck Treadmill Control VR Locomotion Omnidirectional"), Category = "Infinadeck")
+	static FQuat GetUserRotation();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Enable or disable the virtual ring", Keywords = "Infinadeck Treadmill Control VR Locomotion Omnidirectional"), Category = "Infinadeck")
+	static void SetVirtualRing(bool enable);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Check whether the virtual ring is enabled", Keywords = "Infinadeck Treadmill Control VR Locomotion Omnidirectional"), Category = "Infinadeck")
+	static bool GetVirtualRingEnabled();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get the angle difference between the reference device and the treadmill", Keywords = "Infinadeck Treadmill Control VR Locomotion Omnidirectional"), Category = "Infinadeck")
+	static FQuat GetReferenceDeviceAngleDifference();
+
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Import JSON File (Infinadeck)", Keywords = "Infinadeck Treadmill Data Json Omnidirectional"), Category = "Infinadeck")
-	static FString InfinadeckJSONImport(FString CfgFileName);
+	static FString InfinadeckJSONImport(FString CfgFileName, bool FreshStart);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Read JSON File (Infinadeck)", Keywords = "Infinadeck Treadmill Data Json Omnidirectional"), Category = "Infinadeck")
 	static TArray< FString > InfinadeckJSONRead(FString CfgFileName);
