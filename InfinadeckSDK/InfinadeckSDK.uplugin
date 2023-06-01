@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 3,
-	"VersionName": "3.3.0",
+	"Version": 4,
+	"VersionName": "3.3.1",
 	"FriendlyName": "InfinadeckSDK",
 	"Description": "Functions for interfacing with Infinadeck Omnidirectional Treadmill",
 	"Category": "Other",
