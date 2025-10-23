@@ -15,39 +15,39 @@
 class INFINADECKSDK_API FInfinadeckSDKModule : public IModuleInterface
 {
 public:
-	inline bool CheckRuntimeOpen();
-	inline FVector GetRingPosition();
-	inline FVector GetTreadmillDirection();
-	inline float GetRingRadius();
-	inline void SetTreadmillRunState(bool state);
-	inline void StartTreadmillUserControl();
-	inline void StartTreadmillManualControl();
-	inline void StopTreadmill();
-	inline bool GetTreadmillPause();
-	inline void SetTreadmillPause(bool brake);
-	inline bool GetTreadmillRunState();
-	inline InfinadeckInitError ConnectToTreadmill();
-	inline bool CheckConnection();
-	inline FString GetTreadmillID();
-	inline FString GetTreadmillModelNumber();
-	inline FString GetTreadmillDLLVersion();
-	inline void SetTreadmillManualMotion(double x, double y);
-	inline float GetFloorSpeedMagnitude();
-	inline float GetFloorSpeedAngle();
-	inline FVector GetUserPosition();
-	inline FQuat GetUserRotation();
-	inline void SetVirtualRing(bool enable);
-	inline bool GetVirtualRingEnabled();
-	inline FQuat GetReferenceDeviceAngleDifference();
-	inline FString InfinadeckJSONImport(FString CfgFileName, bool FreshStart);
-	inline TArray< FString > InfinadeckJSONRead(FString CfgFileName);
-	inline bool InfinadeckJSONWrite(FString CfgFileName, TArray< FString > DataString);
+	bool CheckRuntimeOpen();
+	FVector GetRingPosition();
+	FVector GetTreadmillDirection();
+	float GetRingRadius();
+	void SetTreadmillRunState(bool state);
+	void StartTreadmillUserControl();
+	void StartTreadmillManualControl();
+	void StopTreadmill();
+	bool GetTreadmillPause();
+	void SetTreadmillPause(bool brake);
+	bool GetTreadmillRunState();
+	InfinadeckInitError ConnectToTreadmill();
+	bool CheckConnection();
+	FString GetTreadmillID();
+	FString GetTreadmillModelNumber();
+	FString GetTreadmillDLLVersion();
+	void SetTreadmillManualMotion(double x, double y);
+	float GetFloorSpeedMagnitude();
+	float GetFloorSpeedAngle();
+	FVector GetUserPosition();
+	FQuat GetUserRotation();
+	void SetVirtualRing(bool enable);
+	bool GetVirtualRingEnabled();
+	FQuat GetReferenceDeviceAngleDifference();
+	FString InfinadeckJSONImport(FString CfgFileName, bool FreshStart);
+	TArray< FString > InfinadeckJSONRead(FString CfgFileName);
+	bool InfinadeckJSONWrite(FString CfgFileName, TArray< FString > DataString);
 	
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
-	static inline FInfinadeckSDKModule& Get()
+	static FInfinadeckSDKModule& Get()
 	{
 		return FModuleManager::LoadModuleChecked<FInfinadeckSDKModule>("InfinadeckSDK");
 	}
